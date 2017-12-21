@@ -25,3 +25,6 @@ permissions:
         - society.commands.help
         - society.commands.list
         - society.commands.teleport
+    society.commands.help:
+        description: Permission to use the help command
+        default: true

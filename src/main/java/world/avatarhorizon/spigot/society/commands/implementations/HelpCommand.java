@@ -25,7 +25,7 @@ public class HelpCommand extends SubCommand
     @Override
     public void execute(CommandSender sender, List<String> args) throws SocietyCommandException
     {
-        validatePermission(sender, "lands.commands.help");
+        validatePermission(sender, "society.commands.help");
         validatePlayer(sender);
 
         if (args.isEmpty())
