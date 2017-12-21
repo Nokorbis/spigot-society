@@ -1,0 +1,27 @@
+name: Society
+main: world.avatarhorizon.spigot.society.SocietyPlugin
+authors: [Nokorbis, Koudja]
+version: 0.1.0
+depend: [Lands]
+commands:
+    society:
+        description: Society main command
+        aliases: [soc]
+        usage: /society help
+    societychat:
+        description: Society chat command
+        aliases: [socchat, sc]
+        usage: /societychat help
+permissions:
+    society.*:
+        description: Permission to access every command
+        default: op
+        children:
+        - society.commands.*
+    society.commands.*:
+        description: Permission to access basic commands
+        default: false
+        children:
+        - society.commands.help
+        - society.commands.list
+        - society.commands.teleport
