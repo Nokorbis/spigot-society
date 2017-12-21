@@ -61,5 +61,4 @@ public class Society
         return this.safeMembers;
     }
 
-    public v
 }
