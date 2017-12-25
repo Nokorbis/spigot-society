@@ -1,17 +1,14 @@
 package world.avatarhorizon.spigot.society.models;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Society
 {
     private UUID id;
     private String name;
     private String description;
-    private List<SocietyPlayer> members;
-    private List<SocietyPlayer> safeMembers;
+    private Set<SocietyPlayer> members;
+    private Set<SocietyPlayer> safeMembers;
 
     public Society()
     {
@@ -27,8 +24,8 @@ public class Society
 
     private void initialize()
     {
-        this.members = new LinkedList<>();
-        this.safeMembers = Collections.unmodifiableList(members);
+        this.members = new HashSet<>();
+        this.safeMembers = Collections.unmodifiableSet(members);
     }
 
     public UUID getId()
@@ -56,9 +53,18 @@ public class Society
         this.description = description;
     }
 
-    public List<SocietyPlayer> getMembers()
+    public Set<SocietyPlayer> getMembers()
     {
         return this.safeMembers;
     }
 
+    public void addMember(SocietyPlayer member)
+    {
+        this.members.add(member);
+    }
+
+    public void removeMember(SocietyPlayer member)
+    {
+        this.members.remove(member);
+    }
 }

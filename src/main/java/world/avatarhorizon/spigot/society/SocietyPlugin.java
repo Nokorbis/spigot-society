@@ -4,6 +4,8 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import world.avatarhorizon.spigot.society.commands.SocietyCommandExecutor;
 import world.avatarhorizon.spigot.society.controllers.SocietyManager;
+import world.avatarhorizon.spigot.society.persistence.ISocietyPersister;
+import world.avatarhorizon.spigot.society.persistence.JsonSocietyPersister;
 
 import java.util.logging.Logger;
 
@@ -15,8 +17,9 @@ public class SocietyPlugin extends JavaPlugin
     {
         Logger logger = getLogger();
 
-        SocietyManager manager = new SocietyManager(logger);
-        SocietyCommandExecutor executor = new SocietyCommandExecutor(logger);
+        ISocietyPersister societyPersister = new JsonSocietyPersister(getDataFolder(), logger);
+        SocietyManager manager = new SocietyManager(societyPersister, logger);
+        SocietyCommandExecutor executor = new SocietyCommandExecutor(manager, logger);
 
         getServer().getServicesManager().register(SocietyManager.class,manager, this, ServicePriority.Normal);
         getCommand("society").setExecutor(executor);

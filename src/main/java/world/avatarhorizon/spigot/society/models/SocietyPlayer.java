@@ -1,18 +1,20 @@
 package world.avatarhorizon.spigot.society.models;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 public class SocietyPlayer
 {
-    private Player player;
+    private OfflinePlayer player;
     private Society society;
+    private float constitution;
+    //TODO: Ranks
 
-    public SocietyPlayer(Player player)
+    public SocietyPlayer(OfflinePlayer player)
     {
         this.player = player;
     }
 
-    public Player getPlayer()
+    public OfflinePlayer getPlayer()
     {
         return this.player;
     }
@@ -25,5 +27,15 @@ public class SocietyPlayer
     public void setSociety(Society society)
     {
         this.society = society;
+    }
+
+    public float getConstitution()
+    {
+        return constitution;
+    }
+
+    public void setConstitution(float constitution)
+    {
+        this.constitution = constitution;
     }
 }

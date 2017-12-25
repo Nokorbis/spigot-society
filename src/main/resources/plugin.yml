@@ -23,8 +23,12 @@ permissions:
         default: false
         children:
         - society.commands.help
+        - society.commands.create
         - society.commands.list
         - society.commands.teleport
     society.commands.help:
         description: Permission to use the help command
         default: true
+    society.commands.create:
+        description: Permission to use the create command
+        default: false
