@@ -1,13 +1,14 @@
 package world.avatarhorizon.spigot.society.controllers;
 
 
+import org.bukkit.entity.Player;
 import world.avatarhorizon.spigot.society.exceptions.ExceptionCause;
 import world.avatarhorizon.spigot.society.exceptions.SocietyManagementException;
 import world.avatarhorizon.spigot.society.models.Society;
+import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 import world.avatarhorizon.spigot.society.persistence.ISocietyPersister;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class SocietyManager
@@ -16,20 +17,31 @@ public class SocietyManager
     private ISocietyPersister societyPersister;
 
     private List<Society> societies;
+    private Map<UUID, SocietyPlayer> players;
+
+    //TODO: on login : read file an update societyPlayer with proper constitution
 
     public SocietyManager(ISocietyPersister societyPersister, Logger logger)
     {
         this.logger = logger;
         this.societyPersister = societyPersister;
-        this.societies = new LinkedList<>();
+        this.loadData();
     }
 
     private void loadData()
     {
         this.societies = this.societyPersister.loadAll();
+        this.players = new HashMap<>();
+        for (Society society : this.societies)
+        {
+            for (SocietyPlayer player : society.getMembers())
+            {
+                this.players.put(player.getPlayer().getUniqueId(), player);
+            }
+        }
     }
 
-    public void createSociety(String societyName) throws SocietyManagementException
+    public void createSociety(String societyName, Player creator) throws SocietyManagementException
     {
         if (societyName == null)
         {
@@ -49,6 +61,7 @@ public class SocietyManager
 
         Society soc = new Society();
         soc.setName(societyName);
+        soc.addMember(getSocietyPlayer(creator));
         societies.add(soc);
         societyPersister.save(soc);
     }
@@ -73,5 +86,17 @@ public class SocietyManager
             }
         }
         return false;
+    }
+
+    public SocietyPlayer getSocietyPlayer(Player player)
+    {
+        SocietyPlayer socPlayer = players.get(player.getUniqueId());
+        if (socPlayer == null)
+        {
+            socPlayer = new SocietyPlayer(player);
+            socPlayer.setConstitution(100.0f);
+            players.put(player.getUniqueId(), socPlayer);
+        }
+        return socPlayer;
     }
 }

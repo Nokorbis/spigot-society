@@ -79,6 +79,27 @@ public class JsonSocietyPersister implements ISocietyPersister
     {
         List<Society> societies = new LinkedList<>();
 
+        File[] files = societiesFolder.listFiles();
+        if (files != null)
+        {
+            for (File file : files)
+            {
+                if (file.isFile())
+                {
+                    try (InputStream is = new FileInputStream(file))
+                    {
+                        InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+                        Society soc = gson.fromJson(reader, Society.class);
+                        societies.add(soc);
+                    }
+                    catch (IOException e)
+                    {
+                        logger.warning(e.getMessage());
+                    }
+                }
+            }
+        }
+
         return societies;
     }
 

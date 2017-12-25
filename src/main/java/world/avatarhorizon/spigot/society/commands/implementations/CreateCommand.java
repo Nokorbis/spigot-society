@@ -1,6 +1,7 @@
 package world.avatarhorizon.spigot.society.commands.implementations;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import world.avatarhorizon.spigot.society.commands.SubCommand;
 import world.avatarhorizon.spigot.society.controllers.SocietyManager;
 import world.avatarhorizon.spigot.society.exceptions.SocietyCommandException;
@@ -34,7 +35,7 @@ public class CreateCommand extends SubCommand
         String name = args.remove(0);
         try
         {
-            manager.createSociety(name);
+            manager.createSociety(name, (Player) sender);
             sender.sendMessage(messages.getString("success.create"));
             logger.info("Society " + name + " created.");
         }
