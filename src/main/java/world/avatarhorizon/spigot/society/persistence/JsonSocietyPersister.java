@@ -34,7 +34,7 @@ public class JsonSocietyPersister implements ISocietyPersister
         }
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Society.class, new SocietySerializer());
+        builder.registerTypeAdapter(Society.class, new SocietySerializer(logger));
         builder.setPrettyPrinting();
 
         this.gson = builder.create();

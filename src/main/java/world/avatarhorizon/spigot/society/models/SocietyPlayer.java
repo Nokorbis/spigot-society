@@ -7,7 +7,7 @@ public class SocietyPlayer
     private OfflinePlayer player;
     private Society society;
     private float constitution;
-    //TODO: Ranks
+    private Ranks rank;
 
     public SocietyPlayer(OfflinePlayer player)
     {
@@ -37,5 +37,15 @@ public class SocietyPlayer
     public void setConstitution(float constitution)
     {
         this.constitution = constitution;
+    }
+
+    public Ranks getRank()
+    {
+        return rank;
+    }
+
+    public void setRank(Ranks rank)
+    {
+        this.rank = rank;
     }
 }

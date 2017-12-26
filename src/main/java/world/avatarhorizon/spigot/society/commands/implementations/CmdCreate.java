@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-public class CreateCommand extends SubCommand
+public class CmdCreate extends SubCommand
 {
     private SocietyManager manager;
 
-    public CreateCommand(SocietyManager manager, Logger logger, ResourceBundle messages)
+    public CmdCreate(SocietyManager manager, Logger logger, ResourceBundle messages)
     {
         super("create", logger, messages);
         this.manager = manager;

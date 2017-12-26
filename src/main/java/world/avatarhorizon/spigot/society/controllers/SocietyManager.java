@@ -4,6 +4,7 @@ package world.avatarhorizon.spigot.society.controllers;
 import org.bukkit.entity.Player;
 import world.avatarhorizon.spigot.society.exceptions.ExceptionCause;
 import world.avatarhorizon.spigot.society.exceptions.SocietyManagementException;
+import world.avatarhorizon.spigot.society.models.Ranks;
 import world.avatarhorizon.spigot.society.models.Society;
 import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 import world.avatarhorizon.spigot.society.persistence.ISocietyPersister;
@@ -19,7 +20,7 @@ public class SocietyManager
     private List<Society> societies;
     private Map<UUID, SocietyPlayer> players;
 
-    //TODO: on login : read file an update societyPlayer with proper constitution
+    //TODO: on login : read file and update societyPlayer with proper constitution
 
     public SocietyManager(ISocietyPersister societyPersister, Logger logger)
     {
@@ -39,6 +40,15 @@ public class SocietyManager
                 this.players.put(player.getPlayer().getUniqueId(), player);
             }
         }
+    }
+
+    /**
+     * Get the societies of the server
+     * @return a unmodifiable collection of the societies
+     */
+    public List<Society> getSocieties()
+    {
+        return Collections.unmodifiableList(this.societies);
     }
 
     public void createSociety(String societyName, Player creator) throws SocietyManagementException
@@ -61,7 +71,9 @@ public class SocietyManager
 
         Society soc = new Society();
         soc.setName(societyName);
-        soc.addMember(getSocietyPlayer(creator));
+        SocietyPlayer socCreator = getSocietyPlayer(creator);
+        socCreator.setRank(Ranks.LEADER);
+        soc.addMember(socCreator);
         societies.add(soc);
         societyPersister.save(soc);
     }

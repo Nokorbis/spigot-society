@@ -2,7 +2,7 @@ name: Society
 main: world.avatarhorizon.spigot.society.SocietyPlugin
 authors: [Nokorbis, Koudja]
 version: 0.1.0
-depend: [Lands]
+depend: [Lands] #Might change
 commands:
     society:
         description: Society main command
@@ -25,10 +25,13 @@ permissions:
         - society.commands.help
         - society.commands.create
         - society.commands.list
-        - society.commands.teleport
+        - society.commands.home
     society.commands.help:
         description: Permission to use the help command
         default: true
     society.commands.create:
         description: Permission to use the create command
         default: false
+    society.commands.list:
+        description: Permission to use the list command
+        default: true

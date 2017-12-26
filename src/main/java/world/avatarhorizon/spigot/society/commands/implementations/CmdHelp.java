@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-public class HelpCommand extends SubCommand
+public class CmdHelp extends SubCommand
 {
     private final List<SubCommand> commands;
 
-    public HelpCommand(Logger logger, ResourceBundle messages, List<SubCommand> commands)
+    public CmdHelp(Logger logger, ResourceBundle messages, List<SubCommand> commands)
     {
         super("help", logger, messages);
         this.commands = commands;

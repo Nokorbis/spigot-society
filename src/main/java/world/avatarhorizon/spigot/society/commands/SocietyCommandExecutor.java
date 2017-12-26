@@ -3,8 +3,9 @@ package world.avatarhorizon.spigot.society.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import world.avatarhorizon.spigot.society.commands.implementations.CreateCommand;
-import world.avatarhorizon.spigot.society.commands.implementations.HelpCommand;
+import world.avatarhorizon.spigot.society.commands.implementations.CmdCreate;
+import world.avatarhorizon.spigot.society.commands.implementations.CmdHelp;
+import world.avatarhorizon.spigot.society.commands.implementations.CmdList;
 import world.avatarhorizon.spigot.society.controllers.SocietyManager;
 import world.avatarhorizon.spigot.society.exceptions.SocietyCommandException;
 
@@ -21,8 +22,9 @@ public class SocietyCommandExecutor implements CommandExecutor
 
         ResourceBundle messages = ResourceBundle.getBundle("messages/commands");
 
-        this.subCommands.add(new CreateCommand(manager, logger, messages));
-        this.subCommands.add(new HelpCommand(logger, messages, subCommands));
+        this.subCommands.add(new CmdCreate(manager, logger, messages));
+        this.subCommands.add(new CmdHelp(logger, messages, subCommands));
+        this.subCommands.add(new CmdList(manager, logger, messages));
     }
 
     @Override
