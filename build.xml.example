@@ -10,6 +10,12 @@
         <property name="config" value="config/" />
         <property name="dist" value="/home/minecraft" />
     </target>
+    <target name="deps" depends="init">
+        <delete dir="${libdir}/spigot-1.12.2.jar"/>
+        <delete dir="${libdir}/gson-2.8.2.jar"/>
+        <get src="https://hub.spigotmc.org/nexus/content/groups/public/org/spigotmc/spigot-api/1.12.2-R0.1-SNAPSHOT/spigot-api-1.12.2-R0.1-20171229.033452-68.jar" dest="${libdir}/spigot-1.12.2.jar" usetimestamp="true" />
+        <get src="http://central.maven.org/maven2/com/google/code/gson/gson/2.8.2/gson-2.8.2.jar" dest="${libdir}/gson-2.8.2.jar" usetimestamp="true" />
+    </target>
     <target name="clean" depends="init">
         <delete dir="${outputDir}" />
     </target>
@@ -32,6 +38,7 @@
             <fileset dir="${rscDir}">
                 <include name="plugin.yml" />
                 <include name="messages/commands.properties" />
+                <include name="messages/events.properties" />
             </fileset>
           </zip>
     	  <copy file="${outputDir}/${jarname}.jar" tofile="${dist}/plugins/${jarname}.jar"/>

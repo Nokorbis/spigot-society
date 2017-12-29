@@ -1,13 +1,17 @@
 package world.avatarhorizon.spigot.society.controllers;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import world.avatarhorizon.spigot.society.events.SocietyCreateEvent;
+import world.avatarhorizon.spigot.society.events.SocietyDisbandEvent;
 import world.avatarhorizon.spigot.society.exceptions.ExceptionCause;
 import world.avatarhorizon.spigot.society.exceptions.SocietyManagementException;
 import world.avatarhorizon.spigot.society.models.Ranks;
 import world.avatarhorizon.spigot.society.models.Society;
 import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 import world.avatarhorizon.spigot.society.persistence.ISocietyPersister;
+import world.avatarhorizon.spigot.society.persistence.ISocietyPlayerPersister;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -16,22 +20,25 @@ public class SocietyManager
 {
     private Logger logger;
     private ISocietyPersister societyPersister;
+    private ISocietyPlayerPersister playerPersister;
 
     private List<Society> societies;
     private Map<UUID, SocietyPlayer> players;
 
     //TODO: on login : read file and update societyPlayer with proper constitution
 
-    public SocietyManager(ISocietyPersister societyPersister, Logger logger)
+    public SocietyManager(ISocietyPersister societyPersister, ISocietyPlayerPersister playerPersister, Logger logger)
     {
         this.logger = logger;
         this.societyPersister = societyPersister;
+        this.playerPersister = playerPersister;
         this.loadData();
     }
 
     private void loadData()
     {
         this.societies = this.societyPersister.loadAll();
+        this.societies.sort(Comparator.comparing(Society::getName));
         this.players = new HashMap<>();
         for (Society society : this.societies)
         {
@@ -49,6 +56,24 @@ public class SocietyManager
     public List<Society> getSocieties()
     {
         return Collections.unmodifiableList(this.societies);
+    }
+
+    /**
+     * Get the society matching this name (ignoring case)
+     * @param societyName The name of the society
+     * @return a <code>Society</code> if one was one. <br> <code>null</code> otherwise
+     */
+    public Society getSociety(String societyName)
+    {
+        societyName = societyName.trim().toLowerCase();
+        for (Society society : societies)
+        {
+            if (society.getName().toLowerCase().equals(societyName))
+            {
+                return society;
+            }
+        }
+        return null;
     }
 
     public void createSociety(String societyName, Player creator) throws SocietyManagementException
@@ -74,8 +99,11 @@ public class SocietyManager
         SocietyPlayer socCreator = getSocietyPlayer(creator);
         socCreator.setRank(Ranks.LEADER);
         soc.addMember(socCreator);
-        societies.add(soc);
-        societyPersister.save(soc);
+
+        this.societies.add(soc);
+        this.societies.sort(Comparator.comparing(Society::getName));
+        this.societyPersister.save(soc);
+        Bukkit.getPluginManager().callEvent(new SocietyCreateEvent(soc, socCreator));
     }
 
     /**
@@ -89,7 +117,7 @@ public class SocietyManager
         {
             return false;
         }
-        societyName = societyName.toLowerCase();
+        societyName = societyName.trim().toLowerCase();
         for (Society society : societies)
         {
             if (society.getName().toLowerCase().equals(societyName))
@@ -107,8 +135,25 @@ public class SocietyManager
         {
             socPlayer = new SocietyPlayer(player);
             socPlayer.setConstitution(100.0f);
+            socPlayer.setRank(Ranks.RECRUIT);
             players.put(player.getUniqueId(), socPlayer);
         }
         return socPlayer;
+    }
+
+    public void disbandSociety(Society soc, SocietyPlayer socPlayer)
+    {
+        if (soc != null)
+        {
+            this.societies.remove(soc);
+            this.societyPersister.delete(soc);
+            Bukkit.getPluginManager().callEvent(new SocietyDisbandEvent(soc, socPlayer));
+        }
+    }
+
+    public void leaveSociety(SocietyPlayer societyPlayer)
+    {
+        societyPlayer.setRank(Ranks.RECRUIT);
+        societyPlayer.setSociety(null);
     }
 }

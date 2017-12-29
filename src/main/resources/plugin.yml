@@ -18,14 +18,21 @@ permissions:
         default: op
         children:
         - society.commands.*
+        - society.admin.*
     society.commands.*:
         description: Permission to access basic commands
         default: false
         children:
         - society.commands.help
         - society.commands.create
+        - society.commands.disband
         - society.commands.list
         - society.commands.home
+    society.admin.*:
+        description: Permission to access admin features
+        default: false
+        children:
+        - society.admin.disband
     society.commands.help:
         description: Permission to use the help command
         default: true
@@ -35,3 +42,9 @@ permissions:
     society.commands.list:
         description: Permission to use the list command
         default: true
+    society.commands.disband:
+        description: Permission to use the disband comand
+        default: false
+    society.admin.disband:
+        description: Permission to disband someone else's society
+        default: false

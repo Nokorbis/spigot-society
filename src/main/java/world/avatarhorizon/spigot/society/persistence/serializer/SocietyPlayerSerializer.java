@@ -8,7 +8,7 @@ import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-public class PlayerSerializer implements JsonSerializer<SocietyPlayer>, JsonDeserializer<SocietyPlayer>
+public class SocietyPlayerSerializer implements JsonSerializer<SocietyPlayer>, JsonDeserializer<SocietyPlayer>
 {
     @Override
     public SocietyPlayer deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException

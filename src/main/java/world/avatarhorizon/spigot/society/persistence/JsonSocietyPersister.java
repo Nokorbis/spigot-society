@@ -67,7 +67,7 @@ public class JsonSocietyPersister implements ISocietyPersister
         }
         catch (IOException e)
         {
-            logger.severe("IOException while writing file");
+            logger.severe("IOException while writing society file");
             logger.severe(e.getMessage());
             return false;
         }
@@ -106,6 +106,10 @@ public class JsonSocietyPersister implements ISocietyPersister
     @Override
     public void delete(Society society)
     {
-
+        File file = new File(societiesFolder, society.getId().toString() + ".json");
+        if (file.exists())
+        {
+            file.delete();
+        }
     }
 }
