@@ -31,7 +31,10 @@ public class SocietyPlayerSerializer implements JsonSerializer<SocietyPlayer>, J
         root.addProperty("id", player.getPlayer().getUniqueId().toString());
         root.addProperty("name", player.getPlayer().getName());
         root.addProperty("constitution", player.getConstitution());
-        root.addProperty("society", player.getSociety().getId().toString());
+        if (player.getSociety() != null)
+        {
+            root.addProperty("society", player.getSociety().getId().toString());
+        }
 
         return root;
     }

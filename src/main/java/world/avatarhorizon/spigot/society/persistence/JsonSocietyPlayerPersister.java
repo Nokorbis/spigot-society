@@ -3,7 +3,6 @@ package world.avatarhorizon.spigot.society.persistence;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
-import world.avatarhorizon.spigot.society.models.Society;
 import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 import world.avatarhorizon.spigot.society.persistence.serializer.SocietyPlayerSerializer;
 
@@ -16,7 +15,7 @@ import java.util.logging.Logger;
 public class JsonSocietyPlayerPersister implements ISocietyPlayerPersister
 {
     private static final String DATA_FOLDER_NAME = "data";
-    private static final String PLAYERS_FOLDER_NAME = "PLAYERS";
+    private static final String PLAYERS_FOLDER_NAME = "players";
 
     private final Logger logger;
 
@@ -36,7 +35,7 @@ public class JsonSocietyPlayerPersister implements ISocietyPlayerPersister
         }
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Society.class, new SocietyPlayerSerializer());
+        builder.registerTypeAdapter(SocietyPlayer.class, new SocietyPlayerSerializer());
         builder.setPrettyPrinting();
 
         this.gson = builder.create();

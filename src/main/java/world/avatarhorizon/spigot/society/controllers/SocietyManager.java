@@ -2,6 +2,7 @@ package world.avatarhorizon.spigot.society.controllers;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import world.avatarhorizon.spigot.society.events.SocietyCreateEvent;
 import world.avatarhorizon.spigot.society.events.SocietyDisbandEvent;
@@ -89,6 +90,12 @@ public class SocietyManager
             throw new SocietyManagementException(ExceptionCause.INVALID_NAME);
         }
 
+        SocietyPlayer socCreator = getSocietyPlayer(creator);
+        if (socCreator.getSociety() != null)
+        {
+            throw new SocietyManagementException(ExceptionCause.ALREADY_IN_SOCIETY);
+        }
+
         if (containsName(societyName))
         {
             throw new SocietyManagementException(ExceptionCause.SOCIETY_NAME_USED);
@@ -96,9 +103,10 @@ public class SocietyManager
 
         Society soc = new Society();
         soc.setName(societyName);
-        SocietyPlayer socCreator = getSocietyPlayer(creator);
-        socCreator.setRank(Ranks.LEADER);
         soc.addMember(socCreator);
+
+        socCreator.setSociety(soc);
+        socCreator.setRank(Ranks.LEADER);
 
         this.societies.add(soc);
         this.societies.sort(Comparator.comparing(Society::getName));
@@ -128,7 +136,12 @@ public class SocietyManager
         return false;
     }
 
-    public SocietyPlayer getSocietyPlayer(Player player)
+    /**
+     * Get the society data linked to that player.
+     * @param player A Player of the server
+     * @return a SocietyPlayer containing the society data of a player.
+     */
+    public SocietyPlayer getSocietyPlayer(OfflinePlayer player)
     {
         SocietyPlayer socPlayer = players.get(player.getUniqueId());
         if (socPlayer == null)
@@ -137,6 +150,7 @@ public class SocietyManager
             socPlayer.setConstitution(100.0f);
             socPlayer.setRank(Ranks.RECRUIT);
             players.put(player.getUniqueId(), socPlayer);
+            this.playerPersister.save(socPlayer);
         }
         return socPlayer;
     }
@@ -155,5 +169,6 @@ public class SocietyManager
     {
         societyPlayer.setRank(Ranks.RECRUIT);
         societyPlayer.setSociety(null);
+        this.playerPersister.save(societyPlayer);
     }
 }

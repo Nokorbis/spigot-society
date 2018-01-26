@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import world.avatarhorizon.spigot.society.commands.implementations.CmdCreate;
+import world.avatarhorizon.spigot.society.commands.implementations.CmdDisband;
 import world.avatarhorizon.spigot.society.commands.implementations.CmdHelp;
 import world.avatarhorizon.spigot.society.commands.implementations.CmdList;
 import world.avatarhorizon.spigot.society.controllers.SocietyManager;
@@ -23,8 +24,9 @@ public class SocietyCommandExecutor implements CommandExecutor
         ResourceBundle messages = ResourceBundle.getBundle("messages/commands");
 
         this.subCommands.add(new CmdCreate(manager, logger, messages));
-        this.subCommands.add(new CmdHelp(logger, messages, subCommands));
+        this.subCommands.add(new CmdDisband(manager, logger, messages));
         this.subCommands.add(new CmdList(manager, logger, messages));
+        this.subCommands.add(new CmdHelp(logger, messages, subCommands));
     }
 
     @Override

@@ -6,6 +6,7 @@ import world.avatarhorizon.spigot.society.commands.SubCommand;
 import world.avatarhorizon.spigot.society.controllers.SocietyManager;
 import world.avatarhorizon.spigot.society.exceptions.SocietyCommandException;
 import world.avatarhorizon.spigot.society.exceptions.SocietyManagementException;
+import world.avatarhorizon.spigot.society.models.SocietyPlayer;
 
 import java.util.List;
 import java.util.ResourceBundle;
