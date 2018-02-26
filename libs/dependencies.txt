@@ -1,6 +1,0 @@
-Dependencies:
-=============
-- Spigot 1.12.2
-- Gson 2.8.2
-
-Command : ant deps
